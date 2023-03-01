@@ -1,18 +1,28 @@
 pipeline {
+    
     agent any
     
     environment {
       TOMCAT_DEV = "172.31.49.161"
       TOMCAT_USER = "ec2-user"
     }
+    parameters {
+      string defaultValue: 'main', description: 'Chose branch to build and deploy', name: 'branchName'
+    }
 
     stages {
+        stage("Git Checkout"){
+            steps{
+                git branch: "${params.branchName}", credentialsId: 'github', url: 'https://github.com/javahometech/hr-api'
+            }
+        }
     
         stage('Maven Build') {
             steps {
                 sh 'mvn clean package'
             }
         }
+      
         stage("Dev Deploy"){
             steps{
               sshagent(['tocat-dev']) {
