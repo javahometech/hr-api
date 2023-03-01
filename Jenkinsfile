@@ -12,12 +12,18 @@ pipeline {
 
     stages {
         stage("Git Checkout"){
+            when {
+               params.branchName == "develop"
+            }
             steps{
                 git branch: "${params.branchName}", credentialsId: 'github', url: 'https://github.com/javahometech/hr-api'
             }
         }
     
         stage('Maven Build') {
+            when {
+               params.branchName == "develop"
+            }
             steps {
                 sh 'mvn clean package'
             
@@ -25,6 +31,9 @@ pipeline {
         }
       
         stage("Dev Deploy"){
+            when {
+               params.branchName == "develop"
+            }
             steps{
               sshagent(['tocat-dev']) {
                   // copy war file onto tomcat sever
