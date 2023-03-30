@@ -2,11 +2,11 @@ pipeline {
     agent any
 
     stages {
-        stage('Git Checkout') {
-            steps {
-                git branch: 'main', credentialsId: 'github-tokens', url: 'https://github.com/javahometech/hr-api'
-            }
-        }
+//         stage('Git Checkout') {
+//             steps {
+//                 git branch: 'main', credentialsId: 'github-tokens', url: 'https://github.com/javahometech/hr-api'
+//             }
+//         }
         stage('Maven Build') {
             steps {
                 sh 'mvn clean package'
